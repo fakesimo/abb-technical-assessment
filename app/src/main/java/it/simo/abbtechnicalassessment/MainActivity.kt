@@ -7,10 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import it.simo.abbtechnicalassessment.repos.model.Repo
+import it.simo.abbtechnicalassessment.repos.ui.DashboardScreen
 import it.simo.abbtechnicalassessment.ui.theme.ABBTechnicalAssessmentTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,28 +19,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ABBTechnicalAssessmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    DashboardScreen(
+                        repos = generateSequence('a') { it + 1 }
+                            .map { Repo(name = it.toString(), language = "Kotlin") }
+                            .take(100)
+                            .toList(),
+                        modifier = Modifier.padding(innerPadding),
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ABBTechnicalAssessmentTheme {
-        Greeting("Android")
     }
 }

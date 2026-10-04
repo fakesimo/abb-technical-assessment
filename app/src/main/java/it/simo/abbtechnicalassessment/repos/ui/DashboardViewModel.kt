@@ -26,6 +26,9 @@ class DashboardViewModel(
     fun onAction(action: DashboardAction) {
         when (action) {
             DashboardAction.Retry -> loadGitRepos()
+            is DashboardAction.Click -> viewModelScope.launch {
+                _events.emit(DashboardEvent.ShowMessage("Clicked ${action.name}"))
+            }
         }
     }
 

@@ -13,12 +13,15 @@ import androidx.compose.ui.unit.dp
 import it.simo.abbtechnicalassessment.repos.model.GitRepo
 
 @Composable
-fun GitRepoCard(gitRepo: GitRepo, modifier: Modifier = Modifier) {
+fun GitRepoCard(gitRepo: GitRepo, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
     ) {
         Box(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(gitRepo.name)

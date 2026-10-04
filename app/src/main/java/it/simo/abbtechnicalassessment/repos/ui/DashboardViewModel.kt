@@ -26,9 +26,7 @@ class DashboardViewModel(
     fun onAction(action: DashboardAction) {
         when (action) {
             DashboardAction.Retry -> loadGitRepos()
-            is DashboardAction.Click -> viewModelScope.launch {
-                _events.emit(DashboardEvent.ShowMessage("Clicked ${action.name}"))
-            }
+            is DashboardAction.Click -> navigateToDetails(action)
         }
     }
 
@@ -38,7 +36,12 @@ class DashboardViewModel(
             val repos = repository.getRepos()
             _state.update { it.copy(isLoading = false, gitRepositories = repos) }
             _events.emit(DashboardEvent.ShowMessage("Loaded ${repos.size} repos"))
-//            _state.update { it.copy(isLoading = false, error = "BOOM!") }
+        }
+    }
+
+    private fun navigateToDetails(action: DashboardAction.Click) {
+        viewModelScope.launch {
+            _events.emit(DashboardEvent.NavigateToDetails(action.name))
         }
     }
 

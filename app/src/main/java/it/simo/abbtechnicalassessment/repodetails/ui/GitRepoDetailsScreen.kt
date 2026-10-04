@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 fun GitRepoDetailsScreen(
     state: GitRepoDetailsState,
     onAction: (GitRepoDetailsAction) -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when {

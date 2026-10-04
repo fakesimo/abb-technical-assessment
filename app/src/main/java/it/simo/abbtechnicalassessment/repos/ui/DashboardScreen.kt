@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,33 +22,57 @@ fun DashboardScreen(
     modifier: Modifier = Modifier
 ) {
     when {
-        state.isLoading -> Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator()
-        }
+        state.isLoading -> LoadingContent(modifier)
 
-        state.error != null -> Column(
-            modifier = modifier,
-        ) {
-            Text(state.error)
-            Button(
-                onClick = { onAction(DashboardAction.Retry) },
-            ) {
-                Text("Retry")
-            }
-        }
+        state.error != null -> ErrorContent(
+            state.error,
+            { onAction(DashboardAction.Retry) },
+            modifier,
+        )
 
-        else -> LazyColumn(
-            modifier = modifier,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            items(state.gitRepositories.size) { index ->
-                GitRepoCard(state.gitRepositories[index])
-            }
-        }
+        else -> GitRepoList(state, modifier)
     }
 
+}
+
+@Composable
+private fun LoadingContent(modifier: Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(48.dp),
+        )
+    }
+}
+
+@Composable
+private fun ErrorContent(errorMessage: String, onRetry: () -> Unit, modifier: Modifier) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(errorMessage)
+        Button(
+            onClick = { onRetry() },
+        ) {
+            Text("Retry")
+        }
+    }
+}
+
+@Composable
+private fun GitRepoList(
+    state: DashboardState,
+    modifier: Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items(state.gitRepositories.size) { index ->
+            GitRepoCard(state.gitRepositories[index])
+        }
+    }
 }

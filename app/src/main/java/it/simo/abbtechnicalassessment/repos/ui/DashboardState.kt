@@ -7,7 +7,3 @@ data class DashboardState(
     val gitRepositories: List<GitRepo> = emptyList(),
     val error: String? = null,
 )
-
-sealed interface DashboardAction{
-    data object Retry: DashboardAction
-}

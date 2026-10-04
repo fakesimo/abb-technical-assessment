@@ -26,7 +26,8 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     DashboardScreen(
-                        gitRepos = state.gitRepositories,
+                        state = state,
+                        onAction = viewModel::onAction,
                         modifier = Modifier.padding(innerPadding),
                     )
                 }

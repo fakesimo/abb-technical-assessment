@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import it.simo.abbtechnicalassessment.repos.model.Repo
+import it.simo.abbtechnicalassessment.repos.model.GitRepo
 
 @Composable
-fun RepoCard(repo: Repo, modifier: Modifier = Modifier) {
+fun GitRepoCard(gitRepo: GitRepo, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -21,7 +21,7 @@ fun RepoCard(repo: Repo, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize().padding(16.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(repo.name)
+            Text(gitRepo.name)
         }
     }
 }

@@ -1,6 +1,6 @@
 package it.simo.abbtechnicalassessment.repos.model
 
-data class Repo(
+data class GitRepo(
     val name: String,
     val description: String = "",
     val language: String,

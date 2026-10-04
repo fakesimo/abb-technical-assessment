@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.androidx.lifecycle)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
 
     testImplementation(libs.junit)
 

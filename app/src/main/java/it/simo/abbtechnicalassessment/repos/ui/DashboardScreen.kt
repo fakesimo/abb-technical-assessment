@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import it.simo.abbtechnicalassessment.ui.components.ErrorContent
+import it.simo.abbtechnicalassessment.ui.components.LoadingContent
 
 @Composable
 fun DashboardScreen(
@@ -33,32 +35,6 @@ fun DashboardScreen(
         else -> GitRepoList(state, onAction, modifier)
     }
 
-}
-
-@Composable
-private fun LoadingContent(modifier: Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(48.dp),
-        )
-    }
-}
-
-@Composable
-private fun ErrorContent(errorMessage: String, onRetry: () -> Unit, modifier: Modifier) {
-    Column(
-        modifier = modifier,
-    ) {
-        Text(errorMessage)
-        Button(
-            onClick = { onRetry() },
-        ) {
-            Text("Retry")
-        }
-    }
 }
 
 @Composable

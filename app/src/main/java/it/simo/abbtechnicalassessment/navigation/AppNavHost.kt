@@ -67,7 +67,6 @@ fun AppNavHost() {
                 GitRepoDetailsScreen(
                     state = state,
                     onAction = viewModel::onAction,
-                    onBack = { navController.popBackStack() },
                     modifier = Modifier.padding(innerPadding),
                 )
             }

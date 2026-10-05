@@ -2,7 +2,7 @@ package it.simo.abbtechnicalassessment.repos.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import it.simo.abbtechnicalassessment.repos.data.IGitRepoRepository
+import it.simo.abbtechnicalassessment.repos.data.GitRepoRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
-    private val repository: IGitRepoRepository,
+    private val repository: GitRepoRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(DashboardState(isLoading = true))
     val state = _state.asStateFlow()

@@ -10,7 +10,6 @@ class RealGitRepoRepository(
     override suspend fun getRepos(): List<GitRepo> =
         api.getRepositories("JetBrains").map { it.toDomain() }
 
-    override suspend fun getRepo(name: String): GitRepo? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getRepo(name: String): GitRepo? =
+        getRepos().firstOrNull { it.name == name }
 }

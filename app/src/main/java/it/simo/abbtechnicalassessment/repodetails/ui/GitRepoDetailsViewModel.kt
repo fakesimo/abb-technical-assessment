@@ -3,6 +3,7 @@ package it.simo.abbtechnicalassessment.repodetails.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.simo.abbtechnicalassessment.repos.data.GitRepoRepository
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,32 +22,22 @@ class GitRepoDetailsViewModel(
 
     fun onAction(action: GitRepoDetailsAction) {
         when (action) {
-//            GitRepoDetailsAction.GoBack -> TODO()
             GitRepoDetailsAction.Load -> load()
         }
     }
 
     private fun load() {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, gitRepo = null, error = null) }
-            repository.getRepo(name)
-                ?.let {
-                    _state.update { old ->
-                        old.copy(
-                            isLoading = false,
-                            gitRepo = it,
-                            error = null,
-                        )
-                    }
-                }
-                ?: _state.update {
-                    it.copy(
-                        isLoading = false,
-                        gitRepo = null,
-                        error = "Repo $name not found! :O",
-                    )
-                }
-
+            _state.update { it.toLoadingState() }
+            try {
+                repository.getRepo(name)
+                    ?.let { _state.update { old -> old.toLoadedState(it) } }
+                    ?: _state.update { it.toErrorState("Repo $name not found! :O") }
+            } catch (ex: CancellationException) {
+                throw ex
+            } catch (ex: Exception) {
+                _state.update { it.toErrorState("Couldn't load repo: ${ex.localizedMessage}") }
+            }
         }
     }
 

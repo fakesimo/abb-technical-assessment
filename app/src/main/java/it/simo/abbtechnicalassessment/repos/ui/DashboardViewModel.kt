@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
+    private val username: String,
     private val repository: GitRepoRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(DashboardState(isLoading = true))
@@ -35,7 +36,7 @@ class DashboardViewModel(
         viewModelScope.launch {
             try {
                 _state.update { it.toLoadingState() }
-                val repos = repository.getRepos()
+                val repos = repository.getRepos(username)
                 _state.update { it.toLoadedState(repos) }
                 _events.emit(DashboardEvent.ShowMessage("Loaded ${repos.size} repos"))
             } catch (ex: CancellationException) {
@@ -48,7 +49,7 @@ class DashboardViewModel(
 
     private fun navigateToDetails(action: DashboardAction.Click) {
         viewModelScope.launch {
-            _events.emit(DashboardEvent.NavigateToDetails(action.name))
+            _events.emit(DashboardEvent.NavigateToDetails(action.owner, action.name))
         }
     }
 

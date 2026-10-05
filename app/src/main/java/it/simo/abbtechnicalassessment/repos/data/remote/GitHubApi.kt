@@ -9,4 +9,8 @@ class GitHubApi(
 ) {
     suspend fun getRepositories(username: String): List<GitHubRepoDto> =
         client.get("users/$username/repos").body()
+
+    suspend fun getRepository(owner: String, repositoryName: String): GitHubRepoDto =
+        client.get("repos/${owner}/$repositoryName").body()
+
 }

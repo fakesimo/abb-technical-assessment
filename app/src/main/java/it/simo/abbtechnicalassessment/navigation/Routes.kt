@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 object Dashboard
 
 @Serializable
-data class GitRepoDetails(val name: String)
+data class GitRepoDetails(val owner: String, val name: String)

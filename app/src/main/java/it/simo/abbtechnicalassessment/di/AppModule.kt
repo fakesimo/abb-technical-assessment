@@ -14,6 +14,6 @@ val appModule = module {
     single { GitHubApi(get()) }
 
     single<GitRepoRepository> { RealGitRepoRepository(get()) }
-    viewModel { DashboardViewModel(get()) }
-    viewModel { (name: String) -> GitRepoDetailsViewModel(name, get()) }
+    viewModel { DashboardViewModel("JetBrains", get()) }
+    viewModel { (owner: String, name: String) -> GitRepoDetailsViewModel(owner, name, get()) }
 }

@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class GitRepoDetailsViewModel(
-    private val name: String,
+    private val repoOwner: String,
+    private val repoName: String,
     private val repository: GitRepoRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(GitRepoDetailsState(isLoading = true))
@@ -30,9 +31,8 @@ class GitRepoDetailsViewModel(
         viewModelScope.launch {
             _state.update { it.toLoadingState() }
             try {
-                repository.getRepo(name)
-                    ?.let { _state.update { old -> old.toLoadedState(it) } }
-                    ?: _state.update { it.toErrorState("Repo $name not found! :O") }
+                val repo = repository.getRepo(repoOwner, repoName)
+                _state.update { old -> old.toLoadedState(repo) }
             } catch (ex: CancellationException) {
                 throw ex
             } catch (ex: Exception) {

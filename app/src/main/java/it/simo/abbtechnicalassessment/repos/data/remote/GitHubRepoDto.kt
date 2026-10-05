@@ -15,4 +15,5 @@ data class GitHubRepoDto(
 @Serializable
 data class OwnerDto(
     @SerialName("avatar_url") val avatarUrl: String,
+    val login: String
 )

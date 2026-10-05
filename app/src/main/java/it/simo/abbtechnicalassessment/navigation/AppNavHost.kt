@@ -40,7 +40,7 @@ fun AppNavHost() {
                             snackbarHostState.showSnackbar(event.text)
 
                         is DashboardEvent.NavigateToDetails ->
-                            navController.navigate(GitRepoDetails(event.name))
+                            navController.navigate(GitRepoDetails(event.owner, event.name))
                     }
                 }
             }
@@ -58,7 +58,7 @@ fun AppNavHost() {
         }
         composable<GitRepoDetails> { entry ->
             val route = entry.toRoute<GitRepoDetails>()
-            val viewModel: GitRepoDetailsViewModel = koinViewModel { parametersOf(route.name) }
+            val viewModel: GitRepoDetailsViewModel = koinViewModel { parametersOf(route.owner, route.name) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             Scaffold(

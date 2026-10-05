@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.androidx.navigation)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.bundles.ktor)
 
     testImplementation(libs.junit)
 

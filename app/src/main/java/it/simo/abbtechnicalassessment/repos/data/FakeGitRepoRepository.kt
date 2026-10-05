@@ -10,7 +10,7 @@ class FakeGitRepoRepository : GitRepoRepository {
     override suspend fun getRepos(): List<GitRepo> {
         delay(2.seconds)
         return generateSequence('a') { it + 1 }
-            .map { GitRepo(name = it.toString(), language = "Kotlin") }
+            .map { GitRepo(name = it.toString()) }
             .take(40)
             .toList()
     }
@@ -20,11 +20,7 @@ class FakeGitRepoRepository : GitRepoRepository {
         return if (name == "z") {
             null
         } else {
-            GitRepo(
-                name = name,
-                language = "Kotlin",
-                starsNr = Random.nextInt(0, 10_000),
-            )
+            GitRepo(name = name, starsNr = Random.nextInt(0, 10_000))
         }
     }
 }

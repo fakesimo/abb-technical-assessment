@@ -1,14 +1,19 @@
 package it.simo.abbtechnicalassessment.di
 
 import it.simo.abbtechnicalassessment.repodetails.ui.GitRepoDetailsViewModel
-import it.simo.abbtechnicalassessment.repos.data.FakeGitRepoRepository
 import it.simo.abbtechnicalassessment.repos.data.GitRepoRepository
+import it.simo.abbtechnicalassessment.repos.data.RealGitRepoRepository
+import it.simo.abbtechnicalassessment.repos.data.remote.GitHubApi
+import it.simo.abbtechnicalassessment.repos.data.remote.createHttpClient
 import it.simo.abbtechnicalassessment.repos.ui.DashboardViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    single<GitRepoRepository> { FakeGitRepoRepository() }
+    single { createHttpClient() }
+    single { GitHubApi(get()) }
+
+    single<GitRepoRepository> { RealGitRepoRepository(get()) }
     viewModel { DashboardViewModel(get()) }
     viewModel { (name: String) -> GitRepoDetailsViewModel(name, get()) }
 }

@@ -7,10 +7,14 @@ import io.ktor.client.request.get
 class GitHubApi(
     private val client: HttpClient,
 ) {
+    private companion object{
+        const val BASE_URL = "https://api.github.com"
+    }
+
     suspend fun getRepositories(username: String): List<GitHubRepoDto> =
-        client.get("users/$username/repos").body()
+        client.get("$BASE_URL/users/$username/repos").body()
 
     suspend fun getRepository(owner: String, repositoryName: String): GitHubRepoDto =
-        client.get("repos/${owner}/$repositoryName").body()
+        client.get("$BASE_URL/repos/${owner}/$repositoryName").body()
 
 }

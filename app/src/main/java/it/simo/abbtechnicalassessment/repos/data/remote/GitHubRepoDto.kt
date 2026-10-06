@@ -6,9 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GitHubRepoDto(
     val name: String,
-    val description: String? = null,
+    val language: String,
     @SerialName("stargazers_count") val stars: Int = 0,
-    @SerialName("forks_count") val forks: Int = 0,
     @SerialName("owner") val ownerDto: OwnerDto,
 )
 

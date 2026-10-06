@@ -1,6 +1,7 @@
 package it.simo.abbtechnicalassessment.repos.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,9 +23,15 @@ fun GitRepoCard(gitRepo: GitRepo, onClick: () -> Unit, modifier: Modifier = Modi
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.CenterStart,
         ) {
-            Text(gitRepo.name)
+            Column(
+                modifier = modifier,
+            ) {
+                Text(gitRepo.name)
+                Text(gitRepo.primaryLanguage)
+                Text("⭐ ${gitRepo.starsNr}")
+            }
         }
     }
 }

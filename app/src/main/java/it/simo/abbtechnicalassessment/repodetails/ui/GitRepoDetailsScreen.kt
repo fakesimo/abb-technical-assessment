@@ -26,7 +26,6 @@ fun GitRepoDetailsScreen(
             modifier = modifier,
         ) {
             Text("${state.gitRepo?.name}")
-            Text("${state.gitRepo?.description}")
             Text("${state.gitRepo?.starsNr} ⭐")
         }
     }

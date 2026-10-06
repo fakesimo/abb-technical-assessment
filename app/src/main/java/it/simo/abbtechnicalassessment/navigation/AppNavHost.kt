@@ -2,19 +2,25 @@ package it.simo.abbtechnicalassessment.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import it.simo.abbtechnicalassessment.assistant.ui.AssistantSheet
 import it.simo.abbtechnicalassessment.repodetails.ui.GitRepoDetailsScreen
 import it.simo.abbtechnicalassessment.repodetails.ui.GitRepoDetailsViewModel
 import it.simo.abbtechnicalassessment.repos.ui.DashboardEvent
@@ -32,6 +38,7 @@ fun AppNavHost() {
             val viewModel: DashboardViewModel = koinViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
             val snackbarHostState = remember { SnackbarHostState() }
+            var showAssistant by rememberSaveable { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
                 viewModel.events.collect { event ->
@@ -47,7 +54,12 @@ fun AppNavHost() {
 
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                snackbarHost = { SnackbarHost(snackbarHostState) }
+                snackbarHost = { SnackbarHost(snackbarHostState) },
+                floatingActionButton = {
+                    ExtendedFloatingActionButton(onClick = { showAssistant = true }) {
+                        Text("Ask AI")
+                    }
+                },
             ) { innerPadding ->
                 DashboardScreen(
                     state = state,
@@ -55,10 +67,15 @@ fun AppNavHost() {
                     modifier = Modifier.padding(innerPadding),
                 )
             }
+
+            if (showAssistant) {
+                AssistantSheet(onDismiss = { showAssistant = false })
+            }
         }
         composable<GitRepoDetails> { entry ->
             val route = entry.toRoute<GitRepoDetails>()
-            val viewModel: GitRepoDetailsViewModel = koinViewModel { parametersOf(route.owner, route.name) }
+            val viewModel: GitRepoDetailsViewModel =
+                koinViewModel { parametersOf(route.owner, route.name) }
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             Scaffold(

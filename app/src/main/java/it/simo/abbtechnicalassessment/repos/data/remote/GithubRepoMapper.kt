@@ -6,6 +6,6 @@ internal fun GitHubRepoDto.toDomain(): GitRepo =
     GitRepo(
         owner = ownerDto.login,
         name = name,
-        primaryLanguage = language,
+        primaryLanguage = language.orEmpty(),
         starsNr = stars,
     )

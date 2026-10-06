@@ -3,6 +3,7 @@ package it.simo.abbtechnicalassessment.repos.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.simo.abbtechnicalassessment.repos.data.GitRepoRepository
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -32,16 +33,22 @@ class DashboardViewModel(
 
     private fun loadGitRepos() {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, gitRepositories = emptyList(), error = null) }
-            val repos = repository.getRepos()
-            _state.update { it.copy(isLoading = false, gitRepositories = repos) }
-            _events.emit(DashboardEvent.ShowMessage("Loaded ${repos.size} repos"))
+            try {
+                _state.update { it.toLoadingState() }
+                val repos = repository.getRepos()
+                _state.update { it.toLoadedState(repos) }
+                _events.emit(DashboardEvent.ShowMessage("Loaded ${repos.size} repos"))
+            } catch (ex: CancellationException) {
+                throw ex
+            } catch (ex: Exception) {
+                _state.update { it.toErrorState("Couldn't load repos: ${ex.localizedMessage}") }
+            }
         }
     }
 
     private fun navigateToDetails(action: DashboardAction.Click) {
         viewModelScope.launch {
-            _events.emit(DashboardEvent.NavigateToDetails(action.name))
+            _events.emit(DashboardEvent.NavigateToDetails(action.owner, action.name))
         }
     }
 

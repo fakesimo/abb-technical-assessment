@@ -3,6 +3,7 @@ package it.simo.abbtechnicalassessment.di
 import it.simo.abbtechnicalassessment.BuildConfig
 import it.simo.abbtechnicalassessment.assistant.data.AssistantRepository
 import it.simo.abbtechnicalassessment.assistant.data.FakeAssistantRepository
+import it.simo.abbtechnicalassessment.assistant.data.remote.GeminiApi
 import it.simo.abbtechnicalassessment.assistant.ui.AssistantViewModel
 import it.simo.abbtechnicalassessment.data.createHttpClient
 import it.simo.abbtechnicalassessment.repodetails.ui.GitRepoDetailsViewModel
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 val appModule = module {
     single { createHttpClient() }
     single { GitHubApi(get(), BuildConfig.GITHUB_TOKEN) }
+    single { GeminiApi(get(), BuildConfig.GEMINI_KEY) }
 
     single<GitRepoRepository> { RealGitRepoRepository(get()) }
     single<AssistantRepository> { FakeAssistantRepository() }

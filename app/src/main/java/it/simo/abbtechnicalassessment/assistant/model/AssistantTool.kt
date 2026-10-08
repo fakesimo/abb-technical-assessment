@@ -1,4 +1,4 @@
-package it.simo.abbtechnicalassessment.assistant.domain
+package it.simo.abbtechnicalassessment.assistant.model
 
 import it.simo.abbtechnicalassessment.repos.data.GitRepoRepository
 import it.simo.abbtechnicalassessment.repos.model.GitRepo

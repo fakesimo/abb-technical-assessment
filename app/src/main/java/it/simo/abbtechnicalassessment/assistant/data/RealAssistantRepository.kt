@@ -8,7 +8,7 @@ import it.simo.abbtechnicalassessment.assistant.data.remote.InteractionRequest
 import it.simo.abbtechnicalassessment.assistant.data.remote.functionCalls
 import it.simo.abbtechnicalassessment.assistant.data.remote.outputText
 import it.simo.abbtechnicalassessment.assistant.data.remote.userInput
-import it.simo.abbtechnicalassessment.assistant.domain.AssistantTool
+import it.simo.abbtechnicalassessment.assistant.model.AssistantTool
 
 class RealAssistantRepository(
     private val api: GeminiApi,

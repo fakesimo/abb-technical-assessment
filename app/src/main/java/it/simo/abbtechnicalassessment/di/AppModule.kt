@@ -4,8 +4,8 @@ import it.simo.abbtechnicalassessment.BuildConfig
 import it.simo.abbtechnicalassessment.assistant.data.AssistantRepository
 import it.simo.abbtechnicalassessment.assistant.data.RealAssistantRepository
 import it.simo.abbtechnicalassessment.assistant.data.remote.GeminiApi
-import it.simo.abbtechnicalassessment.assistant.domain.AssistantTool
-import it.simo.abbtechnicalassessment.assistant.domain.ListReposTool
+import it.simo.abbtechnicalassessment.assistant.model.AssistantTool
+import it.simo.abbtechnicalassessment.assistant.model.ListReposTool
 import it.simo.abbtechnicalassessment.assistant.ui.AssistantViewModel
 import it.simo.abbtechnicalassessment.data.createHttpClient
 import it.simo.abbtechnicalassessment.repodetails.ui.GitRepoDetailsViewModel

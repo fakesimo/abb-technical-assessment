@@ -1,6 +1,6 @@
 package it.simo.abbtechnicalassessment.assistant.data.remote
 
-import it.simo.abbtechnicalassessment.assistant.domain.AssistantTool
+import it.simo.abbtechnicalassessment.assistant.model.AssistantTool
 
 object GeminiApiMapper {
 

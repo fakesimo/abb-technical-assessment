@@ -93,3 +93,18 @@ fun userInput(text: String): JsonObject = buildJsonObject {
         })
     })
 }
+
+/** [result] is the tool's output as text (usually JSON); [isError] lets the model explain a failed tool. */
+fun functionResult(call: FunctionCall, result: String, isError: Boolean = false): JsonObject =
+    buildJsonObject {
+        put(TYPE, "function_result")
+        put("call_id", call.id)
+        put("name", call.name)
+        put("result", buildJsonArray {
+            add(buildJsonObject {
+                put(TYPE, "text")
+                put("text", result)
+            })
+        })
+        if (isError) put("is_error", true)
+    }

@@ -14,6 +14,9 @@ val localProperties = Properties().apply {
 val githubToken: String = localProperties.getProperty("github.token")
     ?: System.getenv("GITHUB_TOKEN")
     ?: ""
+val geminiKey = localProperties.getProperty("gemini.key")
+    ?: System.getenv("GEMINI_KEY")
+    ?: ""
 
 android {
     namespace = "it.simo.abbtechnicalassessment"
@@ -30,6 +33,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "GITHUB_TOKEN", "\"$githubToken\"")
+        buildConfigField("String", "GEMINI_KEY", "\"$geminiKey\"")
     }
 
     buildTypes {

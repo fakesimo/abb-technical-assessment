@@ -1,5 +1,6 @@
 package it.simo.abbtechnicalassessment.assistant.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.simo.abbtechnicalassessment.assistant.data.AssistantRepository
@@ -33,6 +34,7 @@ class AssistantViewModel(
             } catch (ex: CancellationException) {
                 throw ex
             } catch (ex: Exception) {
+                Log.e("ASSISTANT", "send failed", ex)
                 _state.update { it.toAnsweredState("Sorry, something went wrong. Please try again.") }
             }
         }

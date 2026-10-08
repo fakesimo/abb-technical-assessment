@@ -20,37 +20,34 @@ class RealAssistantRepository(
             You are an assistant that helps user understanding his/her github repositories using tools.
             Minimize token consumption
             """.trimIndent()
+        const val MAX_CALLS = 3
     }
 
     override suspend fun send(text: String): String {
-        val response = api.createInteraction(
-            InteractionRequest(
-                model = MODEL,
-                input = listOf(userInput(text)),
-                tools = listOf(tool.toDto()),
-                systemInstruction = PROMPT,
-                generationConfig = GenerationConfigDto(thinkingLevel = "low"),
-            )
-        ).also {
-            Log.d("ASSISTANT", it.toString())
+        var previousInteractionId: String? = null
+        val userInputs = mutableListOf(userInput(text))
+
+        repeat(MAX_CALLS) {
+            val response = api.createInteraction(
+                InteractionRequest(
+                    model = MODEL,
+                    previousInteractionId = previousInteractionId,
+                    input = userInputs,
+                    tools = listOf(tool.toDto()),
+                    systemInstruction = PROMPT,
+                    generationConfig = GenerationConfigDto(thinkingLevel = "low"),
+                )
+            ).also {
+                Log.d("ASSISTANT", it.toString())
+            }
+
+            val functionCall = response.functionCalls()
+                .firstOrNull { it.name == "list_repos" }
+                ?: return response.outputText()
+
+            userInputs.add(userInput(tool.execute(functionCall.arguments)))
+            previousInteractionId = response.id
         }
-
-        val functionCall = response.functionCalls()
-            .firstOrNull { it.name == "list_repos" }
-            ?: return response.outputText()
-
-        val toolResult = tool.execute(functionCall.arguments)
-        return api.createInteraction(
-            InteractionRequest(
-                model = MODEL,
-                previousInteractionId = response.id,
-                input = listOf(userInput(toolResult)),
-                tools = listOf(tool.toDto()),
-                systemInstruction = PROMPT,
-                generationConfig = GenerationConfigDto(thinkingLevel = "low"),
-            )
-        ).also {
-            Log.d("ASSISTANT", it.toString())
-        }.outputText()
+        error("Unable to obtain a response from ASSISTANT in $MAX_CALLS calls")
     }
 }
